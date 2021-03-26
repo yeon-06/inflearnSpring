@@ -18,5 +18,6 @@ public class HelloServlet extends HttpServlet{
 		res.setContentType("text/plain");
 		res.setCharacterEncoding("utf-8");
 		res.getWriter().write("hello "+username);
+		
 	}
 }
