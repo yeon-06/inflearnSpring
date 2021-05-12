@@ -1,10 +1,10 @@
 # 스프링 MVC 클론 코딩
 
-> 스프링 MVC 1편 - 백엔드 웹 개발 핵심 기술
-
-본 레포지토리는 김영한 님의 '[스프링 MVC 1편](https://inf.run/kMtp)' 강의를 수강하며 진행한 클론 코딩을 저장합니다.
+> 본 레포지토리는 김영한 님의 '[스프링 MVC 1편](https://inf.run/kMtp)' 강의를 수강하며 진행한 클론 코딩을 저장합니다.
 
 ***
+
+### 목차
 
 * 웹 어플리케이션 이해
   * [웹 어플리케이션에 대해](https://yeonyeon.tistory.com/80?category=925909)
@@ -22,5 +22,6 @@
   * [프론트 컨트롤러](https://yeonyeon.tistory.com/103)
   * [View 분리](https://yeonyeon.tistory.com/104)
   * [Model 분리](https://yeonyeon.tistory.com/105)
+  * [Controller 단순화](https://yeonyeon.tistory.com/106)
   
 ***
