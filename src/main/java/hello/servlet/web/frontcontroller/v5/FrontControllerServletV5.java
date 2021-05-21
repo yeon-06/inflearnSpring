@@ -25,7 +25,7 @@ import hello.servlet.web.frontcontroller.v5.adapter.ControllerV4HandlerAdapter;
 
 @WebServlet(name = "frontControllerServletV5", urlPatterns="/front-controller/v5/*")
 public class FrontControllerServletV5 extends HttpServlet {
-	private Map<String, Object> handlerMappingMap = new HashMap<>();
+	private final Map<String, Object> handlerMappingMap = new HashMap<>();
 	private final List<MyHandlerAdapter> handlerAdapters = new ArrayList<>();
 	
 	public FrontControllerServletV5() {
