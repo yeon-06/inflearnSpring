@@ -23,5 +23,8 @@
   * [View 분리](https://yeonyeon.tistory.com/104)
   * [Model 분리](https://yeonyeon.tistory.com/105)
   * [Controller 단순화](https://yeonyeon.tistory.com/106)
+  * [어댑터 추가](https://yeonyeon.tistory.com/108)
+
+* 스프링 MVC
   
 ***
