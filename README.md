@@ -31,9 +31,7 @@
   * [뷰 리졸버](https://yeonyeon.tistory.com/115)
   * [@Controller, @RequestMapping](https://yeonyeon.tistory.com/116)
   
-* 스프링 MVC
-  * []()
-  * []()
-  * []()
+* [스프링 MVC](https://github.com/yeon-06/inflearnMVC1-2)
+
 
 ***
