@@ -8,10 +8,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import hello.springmvc.basic.HelloData;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -69,6 +71,25 @@ public class RequestParamController {
 	@RequestMapping("/request-param-MultiValueMap")
 	public String requestParamMultiValueMap(@RequestParam MultiValueMap<String, Object> map) {
 		log.info("username={}, age={}",map.get("username"), map.get("age"));
+		return "ok";
+	}
+	
+	// 파라미터 객체에 담기 - @RequestParam
+	@ResponseBody
+	@RequestMapping("/model-attribute-v1")
+	public String modelAttributeV1(@RequestParam String username, @RequestParam int age) {
+		HelloData helloData = new HelloData();
+		helloData.setUsername(username);
+		helloData.setAge(age);
+		log.info("username={}, age={}",helloData.getUsername(), helloData.getAge());
+		return "ok";
+	}
+	
+	// 파라미터 객체에 담기 - @ModelAttribute
+	@ResponseBody
+	@RequestMapping("/model-attribute-v2")
+	public String modelAttributeV2(@ModelAttribute HelloData helloData) {
+		log.info("username={}, age={}",helloData.getUsername(), helloData.getAge());
 		return "ok";
 	}
 	
