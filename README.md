@@ -11,6 +11,7 @@
 * 스프링 MVC 기본 기능
   * [요청 매핑](https://yeonyeon.tistory.com/123)
   * [헤더 조회](https://yeonyeon.tistory.com/127)
-  * [요청 파라미터]()
+  * [HTTP 요청 데이터 조회](https://yeonyeon.tistory.com/134)
+  * [HTTP 응답](https://yeonyeon.tistory.com/135)
   
 ***
