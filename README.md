@@ -9,7 +9,7 @@
 * Spring MVC에 관해
     * [1편](https://github.com/yeon-06/inflearnMvc1)
     * [2편](https://github.com/yeon-06/inflearnMVC1-2)  
-<br/>
+
 * 프로젝트 진행
 
 ####프로젝트 요구 사항  
@@ -19,7 +19,6 @@
 * 상품명
 * 가격
 * 수량 
-<br/><br/>
 
 상품 관리 기능
 * 상품 목록
