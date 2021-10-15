@@ -27,6 +27,6 @@
 * 상품 수정
 
 ### 서비스 제공 흐름
-![service flow img](src/main/resources/images/service_flow_renewal.PNG)
+![service flow img](src/main/resources/images/service_flow_renewal.png)
 
 ***
