@@ -12,7 +12,7 @@
 
 * 프로젝트 진행
 
-####프로젝트 요구 사항  
+###프로젝트 요구 사항  
 
 상품 도메인 모델
 * 상품 ID
@@ -26,7 +26,7 @@
 * 상품 등록
 * 상품 수정  
 
-####서비스 제공 흐름
+###서비스 제공 흐름
 ![service flow img](src/main/resources/images/service_flow.PNG)
 
 ***
