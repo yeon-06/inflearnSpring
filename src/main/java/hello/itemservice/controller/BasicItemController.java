@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import hello.itemservice.domain.item.Item;
 import hello.itemservice.domain.item.ItemParamDto;
@@ -56,17 +57,25 @@ public class BasicItemController {
 		return "basic/addForm";
 	}
 	
-	@PostMapping("/add/v1")
+//	@PostMapping("/add")
 	public String saveV1(@ModelAttribute Item item, Model model) {
 		itemRepository.save(item);
 		model.addAttribute(item);
 		return "basic/item";
 	}
 	
-	@PostMapping("/add")
-	public String saveV2(@ModelAttribute("item") Item item) {
+//	@PostMapping("/add")
+	public String saveV2(@ModelAttribute Item item) {
 		itemRepository.save(item);
 		return "basic/item";
+	}
+	
+	@PostMapping("/add")
+	public String saveV3(@ModelAttribute Item item, RedirectAttributes redirectAttributes) {
+		Item savedItem = itemRepository.save(item);
+		redirectAttributes.addAttribute("itemId", savedItem.getId());
+		redirectAttributes.addAttribute("status", true);
+		return "redirect:/basic/items/{itemId}";
 	}
 	
 	// test용 데이터
