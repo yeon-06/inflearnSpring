@@ -14,7 +14,7 @@ public class JpaMain {
         transaction.begin();
 
         try {
-            register();
+            update();
             transaction.commit();
 
         } catch (Exception e) {
@@ -36,4 +36,19 @@ public class JpaMain {
         entityManager.persist(member);
     }
 
+    private static void findById() {
+        Member member = entityManager.find(Member.class, 1L);
+        System.out.println("id: " + member.getId());
+        System.out.println("name: " + member.getName());
+    }
+
+    private static void delete() {
+        Member member = entityManager.find(Member.class, 1L);
+        entityManager.remove(member);
+    }
+
+    private static void update() {
+        Member member = entityManager.find(Member.class, 1L);
+        member.setName("byeJPA");
+    }
 }
