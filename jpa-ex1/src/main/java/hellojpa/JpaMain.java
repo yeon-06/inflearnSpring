@@ -28,11 +28,24 @@ public class JpaMain {
         entityManagerFactory.close();
     }
 
-    private static void register() {
+    private static void insert() {
         Member member = new Member();
         member.setId(1L);
         member.setName("helloJPA");
         entityManager.persist(member);
+    }
+
+    private static void inserts() {
+        Member member = new Member();
+        member.setId(1L);
+        member.setName("helloJPA");
+
+        Member member2 = new Member();
+        member.setId(2L);
+        member.setName("helloJPA2");
+
+        entityManager.persist(member);
+        entityManager.persist(member2);
     }
 
     private static void findById() {
