@@ -15,7 +15,7 @@ public class JpaMain {
         transaction.begin();
 
         try {
-            selectAll();
+            isEquals();
             transaction.commit();
 
         } catch (Exception e) {
@@ -52,6 +52,13 @@ public class JpaMain {
         Member member = entityManager.find(Member.class, 1L);
         System.out.println("id: " + member.getId());
         System.out.println("name: " + member.getName());
+    }
+
+    private static void isEquals() {
+        Member member1 = entityManager.find(Member.class, 1L);
+        Member member2 = entityManager.find(Member.class, 1L);
+
+        System.out.println(member1 == member2);
     }
 
     private static void delete() {
