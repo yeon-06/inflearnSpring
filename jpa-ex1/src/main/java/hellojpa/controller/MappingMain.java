@@ -1,4 +1,6 @@
-package hellojpa;
+package hellojpa.controller;
+
+import hellojpa.domain.Users;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

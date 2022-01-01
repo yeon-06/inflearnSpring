@@ -1,10 +1,12 @@
-package hellojpa;
+package hellojpa.domain;
+
+import hellojpa.domain.enums.Role;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-public class Member {
+public class MemberTemp {
     @Id
     private Long id;
 

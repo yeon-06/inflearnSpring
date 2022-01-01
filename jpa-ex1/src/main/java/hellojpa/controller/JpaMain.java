@@ -1,4 +1,6 @@
-package hellojpa;
+package hellojpa.controller;
+
+import hellojpa.domain.MemberTemp;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -29,18 +31,18 @@ public class JpaMain {
     }
 
     private static void insert() {
-        Member member = new Member();
+        MemberTemp member = new MemberTemp();
         member.setId(1L);
         member.setName("helloJPA");
         entityManager.persist(member);
     }
 
     private static void inserts() {
-        Member member = new Member();
+        MemberTemp member = new MemberTemp();
         member.setId(1L);
         member.setName("helloJPA");
 
-        Member member2 = new Member();
+        MemberTemp member2 = new MemberTemp();
         member.setId(2L);
         member.setName("helloJPA2");
 
@@ -49,35 +51,35 @@ public class JpaMain {
     }
 
     private static void findById() {
-        Member member = entityManager.find(Member.class, 1L);
+        MemberTemp member = entityManager.find(MemberTemp.class, 1L);
         System.out.println("id: " + member.getId());
         System.out.println("name: " + member.getName());
     }
 
     private static void isEquals() {
-        Member member1 = entityManager.find(Member.class, 1L);
-        Member member2 = entityManager.find(Member.class, 1L);
+        MemberTemp member1 = entityManager.find(MemberTemp.class, 1L);
+        MemberTemp member2 = entityManager.find(MemberTemp.class, 1L);
 
         System.out.println(member1 == member2);
     }
 
     private static void delete() {
-        Member member = entityManager.find(Member.class, 1L);
+        MemberTemp member = entityManager.find(MemberTemp.class, 1L);
         entityManager.remove(member);
     }
 
     private static void update() {
-        Member member = entityManager.find(Member.class, 1L);
+        MemberTemp member = entityManager.find(MemberTemp.class, 1L);
         member.setName("byeJPA");
     }
 
     private static void selectAll() {
-        List<Member> members = entityManager.createQuery("select m from Member as m", Member.class)
+        List<MemberTemp> members = entityManager.createQuery("select m from Member as m", MemberTemp.class)
                 .setFirstResult(0)
                 .setMaxResults(1)
                 .getResultList();
 
-        for (Member member : members) {
+        for (MemberTemp member : members) {
             System.out.println("id: " + member.getId());
             System.out.println("name: " + member.getName());
         }
