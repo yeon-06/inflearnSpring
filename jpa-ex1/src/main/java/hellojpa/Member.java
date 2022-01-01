@@ -1,7 +1,7 @@
 package hellojpa;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 public class Member {
@@ -14,25 +14,23 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createDate;
+    private LocalDate createDate;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date modifiedDate;
+    private LocalDate modifiedDate;
 
-    public Date getCreateDate() {
+    public LocalDate getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(LocalDate createDate) {
         this.createDate = createDate;
     }
 
-    public Date getModifiedDate() {
+    public LocalDate getModifiedDate() {
         return modifiedDate;
     }
 
-    public void setModifiedDate(Date modifiedDate) {
+    public void setModifiedDate(LocalDate modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
 
