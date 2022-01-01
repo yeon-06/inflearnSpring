@@ -11,6 +11,9 @@ public class Users {
     @Column
     private String name;
 
+    public Users() {
+    }
+
     public String getName() {
         return name;
     }
