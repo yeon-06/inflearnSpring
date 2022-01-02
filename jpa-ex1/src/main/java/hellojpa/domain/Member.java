@@ -1,6 +1,8 @@
 package hellojpa.domain;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Member {
@@ -16,9 +18,17 @@ public class Member {
     @JoinColumn(name = "team_id")
     private Team team;
 
+    @OneToMany(mappedBy = "member")
+    private List<Order> orders = new ArrayList<>();
+
     private String city;
     private String street;
     private String zipcode;
+
+    public void addOrder(Order order) {
+        orders.add(order);
+        order.setMember(this);
+    }
 
     public String getUsername() {
         return username;
@@ -26,6 +36,14 @@ public class Member {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     public Team getTeam() {
