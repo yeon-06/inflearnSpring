@@ -21,6 +21,10 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<>();
 
+    @OneToOne
+    @JoinColumn(name = "member_id")
+    private Locker locker;
+
     private String city;
     private String street;
     private String zipcode;
@@ -52,7 +56,7 @@ public class Member {
 
     public void setTeam(Team team) {
         this.team = team;
-        team.getMembers().add(this);
+//        team.getMembers().add(this);
     }
 
     public Long getId() {
