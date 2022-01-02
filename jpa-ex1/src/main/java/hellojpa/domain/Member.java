@@ -8,9 +8,33 @@ public class Member {
     @GeneratedValue // default: AUTO
     @Column(name = "member_id")
     private Long id;
+
+    @Column(name = "username")
+    private String username;
+
+    @ManyToOne
+    @JoinColumn(name = "team_id")
+    private Team team;
+
     private String city;
     private String street;
     private String zipcode;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
 
     public Long getId() {
         return id;
