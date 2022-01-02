@@ -2,11 +2,11 @@ package hellojpa.domain;
 
 import javax.persistence.*;
 
-//@Entity
+@Entity
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @Column
     private String name;
@@ -22,11 +22,11 @@ public class Users {
         this.name = name;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }
