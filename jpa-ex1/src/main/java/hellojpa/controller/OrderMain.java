@@ -17,26 +17,13 @@ public class OrderMain {
         transaction.begin();
 
         try {
-            // team 생성
-            Team team = new Team();
-            team.setName("teamA");
-            entityManager.persist(team);
+            Team team = createTeam("teamA");
+            persistMember(team, "memberA");
+            persistMember(team, "memberB");
 
-            // member 생성
-            Member member = new Member();
-            member.setUsername("member1");
-            member.setTeam(team);
-            entityManager.persist(member);
+            initialEntityManager();
 
-            // 영속성 컨텍스트 초기화
-            entityManager.flush();
-            entityManager.clear();
-
-            // Member 검색
-            Member findMember = entityManager.find(Member.class, member.getId());
-            System.out.println("팀 id: " + findMember.getTeam().getId());
-            System.out.println("팀 name: " + findMember.getTeam().getName());
-            System.out.println("사용자 name: " + findMember.getUsername());
+            printTeamsMemberList(team.getId());
 
             transaction.commit();
 
@@ -48,5 +35,39 @@ public class OrderMain {
         }
 
         entityManagerFactory.close();
+    }
+
+    private static Team createTeam(String name) {
+        Team team = new Team();
+        team.setName(name);
+        entityManager.persist(team);
+        return team;
+    }
+
+    private static void persistMember(Team team, String name) {
+        Member member = new Member();
+        member.setUsername(name);
+        member.setTeam(team);
+        entityManager.persist(member);
+    }
+
+    private static void printMemberInfo(Long memberId) {
+        Member findMember = entityManager.find(Member.class, memberId);
+        System.out.println("팀 id: " + findMember.getTeam().getId());
+        System.out.println("팀 name: " + findMember.getTeam().getName());
+        System.out.println("사용자 name: " + findMember.getUsername());
+    }
+
+    private static void initialEntityManager() {
+        entityManager.flush();
+        entityManager.clear();
+    }
+
+    private static void printTeamsMemberList(Long teamId) {
+        Team findTeam = entityManager.find(Team.class, teamId);
+        for (Member member : findTeam.getMembers()) {
+            System.out.println("id: " + member.getId());
+            System.out.println("name: " + member.getUsername());
+        }
     }
 }
