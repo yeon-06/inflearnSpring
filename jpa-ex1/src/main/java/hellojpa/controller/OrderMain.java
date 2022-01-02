@@ -21,8 +21,6 @@ public class OrderMain {
             persistMember(team, "memberA");
             persistMember(team, "memberB");
 
-            initialEntityManager();
-
             printTeamsMemberList(team.getId());
 
             transaction.commit();
