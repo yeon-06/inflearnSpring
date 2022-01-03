@@ -4,8 +4,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "inheritance_item")
-@Inheritance(strategy = InheritanceType.JOINED)
-public class Item {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+public class Item extends BaseEntity {
     @Id
     @GeneratedValue
     private Long id;
