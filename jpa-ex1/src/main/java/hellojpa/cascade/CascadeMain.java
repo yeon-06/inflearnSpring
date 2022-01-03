@@ -23,6 +23,8 @@ public class CascadeMain {
 
             entityManager.persist(parent);
 
+            parent.getChildren().remove(0);
+
             transaction.commit();
 
         } catch (Exception e) {
