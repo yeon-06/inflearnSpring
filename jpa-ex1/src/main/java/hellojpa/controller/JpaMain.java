@@ -17,12 +17,14 @@ public class JpaMain {
         transaction.begin();
 
         try {
-            isEquals();
+            inserts();
+            initialEntityManager();
+            findByName();
             transaction.commit();
 
         } catch (Exception e) {
             transaction.rollback();
-
+            e.printStackTrace();
         } finally {
             entityManager.close();
         }
@@ -37,14 +39,19 @@ public class JpaMain {
         entityManager.persist(member);
     }
 
+    private static void initialEntityManager() {
+        entityManager.flush();
+        entityManager.clear();
+    }
+
     private static void inserts() {
         MemberTemp member = new MemberTemp();
-        member.setId(1L);
+//        member.setId(1L);
         member.setName("helloJPA");
 
         MemberTemp member2 = new MemberTemp();
-        member.setId(2L);
-        member.setName("helloJPA2");
+//        member.setId(2L);
+        member2.setName("helloJPA2");
 
         entityManager.persist(member);
         entityManager.persist(member2);
@@ -54,6 +61,17 @@ public class JpaMain {
         MemberTemp member = entityManager.find(MemberTemp.class, 1L);
         System.out.println("id: " + member.getId());
         System.out.println("name: " + member.getName());
+    }
+
+    private static void findByName() {
+        List<MemberTemp> result = entityManager.createQuery(
+                "SELECT m FROM MemberTemp as m WHERE m.name LIKE '%JPA%'"
+                , MemberTemp.class
+        ).getResultList();
+        for (MemberTemp member : result) {
+            System.out.println("id: " + member.getId());
+            System.out.println("name: " + member.getName());
+        }
     }
 
     private static void isEquals() {

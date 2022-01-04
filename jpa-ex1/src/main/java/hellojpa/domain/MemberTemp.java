@@ -8,6 +8,7 @@ import java.time.LocalDate;
 @Entity
 public class MemberTemp {
     @Id
+    @GeneratedValue
     private Long id;
 
     @Column(name = "name")
@@ -19,6 +20,9 @@ public class MemberTemp {
     private LocalDate createDate;
 
     private LocalDate modifiedDate;
+
+    public MemberTemp() {
+    }
 
     public LocalDate getCreateDate() {
         return createDate;
