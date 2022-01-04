@@ -1,4 +1,4 @@
-package hellojpa.embed;
+package hellojpa.valueType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -17,8 +17,11 @@ public class EmbedMain {
         try {
             EmbedMember embedMember = new EmbedMember();
             embedMember.setName("yeonLog");
-            embedMember.setAddress(new Address("성남시", "ㅇㅇ로", "XXXXX"));
+            embedMember.setHomeAddress(new Address("성남시", "ㅇㅇ로", "XXXXX"));
             embedMember.setPeriod(new Period(LocalDateTime.now(), LocalDateTime.MAX));
+
+            embedMember.addFavoriteFoods("치킨");
+            embedMember.addFavoriteFoods("피자");
 
             entityManager.persist(embedMember);
             transaction.commit();
