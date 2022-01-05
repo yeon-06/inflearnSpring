@@ -52,7 +52,7 @@ public class JpqlMain {
 
     // 반환 타입이 명확하지 않음
     private static void selectByQuery() {
-        List<MemberDTO> resultList = entityManager.createQuery("select new hellojpa.jpql.MemberDTO(m.name, m.age) from JpqlMember m")
+        List<MemberDTO> resultList = entityManager.createQuery("select new hellojpa.jpql.MemberDTO(m.name, m.age) from JpqlMember m", MemberDTO.class)
                 .getResultList();
 
         resultList.forEach(m -> {
