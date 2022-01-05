@@ -6,6 +6,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 public class JpaMain {
@@ -19,7 +22,7 @@ public class JpaMain {
         try {
             inserts();
             initialEntityManager();
-            findByName();
+            findByNameByCriteria();
             transaction.commit();
 
         } catch (Exception e) {
@@ -68,7 +71,24 @@ public class JpaMain {
                 "SELECT m FROM MemberTemp as m WHERE m.name LIKE '%JPA%'"
                 , MemberTemp.class
         ).getResultList();
-        for (MemberTemp member : result) {
+        printMemberList(result);
+    }
+
+    // 유지보수의 복잡성 때문에 실무에서 자주 쓰이진 않음
+    private static void findByNameByCriteria() {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<MemberTemp> query = cb.createQuery(MemberTemp.class);
+
+        Root<MemberTemp> m = query.from(MemberTemp.class);
+        CriteriaQuery<MemberTemp> cq = query.select(m)
+                .where(cb.equal(m.get("name"), "helloJPA"));
+        List<MemberTemp> resultList = entityManager.createQuery(cq).getResultList();
+        printMemberList(resultList);
+    }
+
+    private static void printMemberList(List<MemberTemp> members) {
+        System.out.println(">> print Member List");
+        for (MemberTemp member : members) {
             System.out.println("id: " + member.getId());
             System.out.println("name: " + member.getName());
         }
