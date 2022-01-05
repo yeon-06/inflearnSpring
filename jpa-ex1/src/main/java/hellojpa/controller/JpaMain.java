@@ -22,7 +22,7 @@ public class JpaMain {
         try {
             inserts();
             initialEntityManager();
-            findByNameByCriteria();
+            findByNameByNative();
             transaction.commit();
 
         } catch (Exception e) {
@@ -83,6 +83,12 @@ public class JpaMain {
         CriteriaQuery<MemberTemp> cq = query.select(m)
                 .where(cb.equal(m.get("name"), "helloJPA"));
         List<MemberTemp> resultList = entityManager.createQuery(cq).getResultList();
+        printMemberList(resultList);
+    }
+
+    private static void findByNameByNative() {
+        List<MemberTemp> resultList = entityManager.createNativeQuery("select member_id, name from MEMBERTEMP")
+                .getResultList();
         printMemberList(resultList);
     }
 
