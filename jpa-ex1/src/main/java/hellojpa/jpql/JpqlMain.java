@@ -12,7 +12,7 @@ public class JpqlMain {
         transaction.begin();
 
         try {
-            useNullIf();
+            useMyDialect();
             transaction.commit();
 
         } catch (Exception e) {
@@ -23,6 +23,12 @@ public class JpqlMain {
         }
 
         entityManagerFactory.close();
+    }
+
+    private static void useMyDialect() {
+        String query = "select function('group_concat', m.name) from JpqlMember m";
+        List<String> result = entityManager.createQuery(query, String.class).getResultList();
+        printStringList(result);
     }
 
     private static void useCoalesce() {
