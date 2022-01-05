@@ -12,7 +12,7 @@ public class JpqlMain {
         transaction.begin();
 
         try {
-            selectByQuery();
+            selectWithPaging(1,1);
             transaction.commit();
 
         } catch (Exception e) {
@@ -59,6 +59,14 @@ public class JpqlMain {
             System.out.println(m.getName());
             System.out.println(m.getAge());
         });
+    }
+
+    private static void selectWithPaging(int start, int cnt) {
+        TypedQuery<JpqlMember> query = entityManager.createQuery("select m from JpqlMember m", JpqlMember.class)
+                .setFirstResult(start)
+                .setMaxResults(cnt);
+        List<JpqlMember> result1 = query.getResultList();
+        printMemberList(result1);
     }
 
     private static void printMemberList(List<JpqlMember> members) {
