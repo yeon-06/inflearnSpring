@@ -12,7 +12,7 @@ public class JpqlMain {
         transaction.begin();
 
         try {
-            findById(30L);
+            selectByQuery();
             transaction.commit();
 
         } catch (Exception e) {
@@ -39,28 +39,34 @@ public class JpqlMain {
         System.out.println("result = " + member.getName());
     }
 
-    private static void queryAndTypeQuery() {
-        // 반환 타입이 명확
+    // 반환 타입이 명확
+    private static void selectByTypedQuery() {
         TypedQuery<JpqlMember> query1 = entityManager.createQuery("select m from JpqlMember m", JpqlMember.class);
-        TypedQuery<String> query2 = entityManager.createQuery("select m.name from JpqlMember m", String.class);
-
-        // 반환 타입이 명확하지 않음
-        Query query3 = entityManager.createQuery("select m.name, m.age from JpqlMember m");
-
-        // 쿼리 실행
         List<JpqlMember> result1 = query1.getResultList();
         printMemberList(result1);
 
+        TypedQuery<String> query2 = entityManager.createQuery("select m.name from JpqlMember m", String.class);
         List<String> result2 = query2.getResultList();
         printStringList(result2);
+    }
+
+    // 반환 타입이 명확하지 않음
+    private static void selectByQuery() {
+        List<MemberDTO> resultList = entityManager.createQuery("select new hellojpa.jpql.MemberDTO(m.name, m.age) from JpqlMember m")
+                .getResultList();
+
+        resultList.forEach(m -> {
+            System.out.println(m.getName());
+            System.out.println(m.getAge());
+        });
     }
 
     private static void printMemberList(List<JpqlMember> members) {
         System.out.println(">> start print member list");
         members.forEach(m -> {
-                    System.out.println(m.getName());
-                    System.out.println(m.getAge());
-                });
+            System.out.println(m.getName());
+            System.out.println(m.getAge());
+        });
     }
 
     private static void printStringList(List<String> list) {
