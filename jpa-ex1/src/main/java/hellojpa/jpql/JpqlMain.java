@@ -12,7 +12,8 @@ public class JpqlMain {
         transaction.begin();
 
         try {
-            selectWithPaging(1,1);
+            insert(null,25);
+            useCoalesce();
             transaction.commit();
 
         } catch (Exception e) {
@@ -23,6 +24,12 @@ public class JpqlMain {
         }
 
         entityManagerFactory.close();
+    }
+
+    private static void useCoalesce() {
+        String query = "select coalesce(m.name, '이름 없는 회원') from JpqlMember m";
+        List<String> result = entityManager.createQuery(query, String.class).getResultList();
+        printStringList(result);
     }
 
     private static void insert(String username, int age) {
