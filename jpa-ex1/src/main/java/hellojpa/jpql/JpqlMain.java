@@ -12,8 +12,7 @@ public class JpqlMain {
         transaction.begin();
 
         try {
-            insert(null,25);
-            useCoalesce();
+            useNullIf();
             transaction.commit();
 
         } catch (Exception e) {
@@ -28,6 +27,12 @@ public class JpqlMain {
 
     private static void useCoalesce() {
         String query = "select coalesce(m.name, '이름 없는 회원') from JpqlMember m";
+        List<String> result = entityManager.createQuery(query, String.class).getResultList();
+        printStringList(result);
+    }
+
+    private static void useNullIf() {
+        String query = "select NULLIF(m.name, '이름 없는 회원') from JpqlMember m";
         List<String> result = entityManager.createQuery(query, String.class).getResultList();
         printStringList(result);
     }
