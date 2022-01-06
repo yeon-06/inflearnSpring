@@ -1,10 +1,12 @@
 package hellojpa.jpql;
 
-import hellojpa.domain.Team;
-
 import javax.persistence.*;
 
 @Entity
+@NamedQuery(
+        name = "JpqlMember.findByUsername",
+        query = "select m from JpqlMember m where m.name = :name"
+)
 public class JpqlMember {
     @Id
     @GeneratedValue

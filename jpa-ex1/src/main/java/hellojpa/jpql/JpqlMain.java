@@ -13,7 +13,7 @@ public class JpqlMain {
         transaction.begin();
 
         try {
-            selectByFetchJoin();
+            selectByNamedQuery("yeon");
             transaction.commit();
 
         } catch (Exception e) {
@@ -24,6 +24,13 @@ public class JpqlMain {
         }
 
         entityManagerFactory.close();
+    }
+
+    private static void selectByNamedQuery(String username) {
+        List<JpqlMember> result1 = entityManager.createNamedQuery("JpqlMember.findByUsername", JpqlMember.class)
+                .setParameter("name", username)
+                .getResultList();
+        printMemberList(result1);
     }
 
     private static void selectByFetchJoin() {
