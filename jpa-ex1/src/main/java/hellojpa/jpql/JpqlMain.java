@@ -13,7 +13,7 @@ public class JpqlMain {
         transaction.begin();
 
         try {
-            selectByNamedQuery("yeon");
+            updateMemberAge(26, 25);
             transaction.commit();
 
         } catch (Exception e) {
@@ -24,6 +24,15 @@ public class JpqlMain {
         }
 
         entityManagerFactory.close();
+    }
+
+    private static void updateMemberAge(int criteriaAge, int changeAge) {
+        String query = "update JpqlMember m set m.age = :changeAge where m.age = :criteriaAge";
+        int result = entityManager.createQuery(query)
+                        .setParameter("criteriaAge", criteriaAge)
+                        .setParameter("changeAge", changeAge)
+                        .executeUpdate();
+        System.out.println(result);
     }
 
     private static void selectByNamedQuery(String username) {
