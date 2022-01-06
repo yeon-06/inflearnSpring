@@ -13,7 +13,7 @@ public class JpqlOrder {
     @Embedded
     private JpqlAddress address;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private JpqlProduct product;
 

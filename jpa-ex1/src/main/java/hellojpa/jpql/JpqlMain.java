@@ -13,9 +13,7 @@ public class JpqlMain {
         transaction.begin();
 
         try {
-            insert("yeon", 26);
-            initialEntityManager();
-            selectMembersFromTeam();
+            selectByFetchJoin();
             transaction.commit();
 
         } catch (Exception e) {
@@ -26,6 +24,16 @@ public class JpqlMain {
         }
 
         entityManagerFactory.close();
+    }
+
+    private static void selectByFetchJoin() {
+        String query1 = "select m from JpqlMember m join fetch m.team";
+        List<JpqlMember> result1 = entityManager.createQuery(query1, JpqlMember.class).getResultList();
+        printMemberList(result1);
+
+        String query2 = "select t from JpqlTeam t join fetch t.members";
+        List<JpqlTeam> result2 = entityManager.createQuery(query2, JpqlTeam.class).getResultList();
+        result2.forEach(System.out::println);
     }
 
     private static void initialEntityManager() {

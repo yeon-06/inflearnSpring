@@ -43,4 +43,12 @@ public class JpqlTeam {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "JpqlTeam{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

@@ -15,7 +15,7 @@ public class JpqlMember {
 
     private int age;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     private JpqlTeam team;
 
