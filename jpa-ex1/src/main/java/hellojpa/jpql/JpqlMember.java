@@ -17,14 +17,15 @@ public class JpqlMember {
 
     @ManyToOne
     @JoinColumn(name = "team_id")
-    private Team team;
+    private JpqlTeam team;
 
-    public Team getTeam() {
+    public JpqlTeam getTeam() {
         return team;
     }
 
-    public void setTeam(Team team) {
+    public void setTeam(JpqlTeam team) {
         this.team = team;
+        team.addMember(this);
     }
 
     public Long getId() {

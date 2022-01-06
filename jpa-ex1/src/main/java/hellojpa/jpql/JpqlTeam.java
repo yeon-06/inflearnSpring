@@ -16,6 +16,10 @@ public class JpqlTeam {
     @OneToMany(mappedBy = "team")
     private List<JpqlMember> members = new ArrayList<>();
 
+    public void addMember(JpqlMember member) {
+        members.add(member);
+    }
+
     public Long getId() {
         return id;
     }

@@ -13,8 +13,9 @@ public class JpqlMain {
         transaction.begin();
 
         try {
+            insert("yeon", 26);
+            initialEntityManager();
             selectMembersFromTeam();
-            selectTeamFromMember();
             transaction.commit();
 
         } catch (Exception e) {
@@ -27,11 +28,16 @@ public class JpqlMain {
         entityManagerFactory.close();
     }
 
+    private static void initialEntityManager() {
+        entityManager.flush();
+        entityManager.clear();
+    }
+
     // 컬렉션 값 연관 경로 - 묵시적 내부 조인
     private static void selectMembersFromTeam() {
         // Collection 타입으로 반환되기 때문에 t.members.name 같은 호출 불가
         String query = "select t.members from JpqlTeam t";
-        List<Collection> result = entityManager.createQuery(query, Collection.class).getResultList();
+        Collection result = entityManager.createQuery(query, Collection.class).getResultList();
 
         System.out.println(">> selectMembersFromTeam() 결과 출력");
         for (Object o : result) {
@@ -65,9 +71,14 @@ public class JpqlMain {
     }
 
     private static void insert(String username, int age) {
+        JpqlTeam team = new JpqlTeam();
+        team.setName("team1");
+        entityManager.persist(team);
+
         JpqlMember member = new JpqlMember();
         member.setName(username);
         member.setAge(age);
+        member.setTeam(team);
         entityManager.persist(member);
     }
 
