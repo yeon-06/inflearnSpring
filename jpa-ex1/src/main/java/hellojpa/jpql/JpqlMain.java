@@ -1,6 +1,7 @@
 package hellojpa.jpql;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 
 public class JpqlMain {
@@ -12,7 +13,8 @@ public class JpqlMain {
         transaction.begin();
 
         try {
-            useMyDialect();
+            selectMembersFromTeam();
+            selectTeamFromMember();
             transaction.commit();
 
         } catch (Exception e) {
@@ -23,6 +25,25 @@ public class JpqlMain {
         }
 
         entityManagerFactory.close();
+    }
+
+    // 컬렉션 값 연관 경로 - 묵시적 내부 조인
+    private static void selectMembersFromTeam() {
+        // Collection 타입으로 반환되기 때문에 t.members.name 같은 호출 불가
+        String query = "select t.members from JpqlTeam t";
+        List<Collection> result = entityManager.createQuery(query, Collection.class).getResultList();
+
+        System.out.println(">> selectMembersFromTeam() 결과 출력");
+        for (Object o : result) {
+            System.out.println(o.toString());
+        }
+    }
+
+    // 단일 값 연관 경로 - 묵시적 내부 조인
+    private static void selectTeamFromMember() {
+        String query = "select m.team.name from JpqlMember m";
+        List<String> result = entityManager.createQuery(query, String.class).getResultList();
+        printStringList(result);
     }
 
     private static void useMyDialect() {
