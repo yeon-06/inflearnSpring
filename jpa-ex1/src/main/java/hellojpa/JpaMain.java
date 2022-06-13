@@ -1,5 +1,6 @@
 package hellojpa;
 
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -16,9 +17,7 @@ public class JpaMain {
         transaction.begin();
 
         try {
-            insert(entityManager);
-            update(entityManager);
-            delete(entityManager);
+            select(entityManager);
 
             transaction.commit();
 
@@ -36,17 +35,24 @@ public class JpaMain {
         entityManager.persist(member);
     }
 
-    private static Member select(EntityManager entityManager) {
+    private static Member selectOne(EntityManager entityManager) {
         return entityManager.find(Member.class, 1L);
     }
 
     private static void delete(EntityManager entityManager) {
-        Member member = select(entityManager);
+        Member member = selectOne(entityManager);
         entityManager.remove(member);
     }
 
     private static void update(EntityManager entityManager) {
-        Member member = select(entityManager);
+        Member member = selectOne(entityManager);
         member.setName("연로그");
+    }
+
+    private static List<Member> select(EntityManager entityManager) {
+        return entityManager.createQuery("select m from Member as m", Member.class)
+                .setFirstResult(1)
+                .setMaxResults(5)
+                .getResultList();
     }
 }
