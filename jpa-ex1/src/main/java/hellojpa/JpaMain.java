@@ -23,6 +23,7 @@ public class JpaMain {
             transaction.commit();
 
         } catch (Exception e) {
+            e.printStackTrace();
             transaction.rollback();
 
         } finally {
