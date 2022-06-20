@@ -1,16 +1,16 @@
-package hellojpa;
+package hellojpa.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class Member {
+public class Visitor {
 
     @Id
     private Long id;
     private String name;
 
-    public Member(Long id, String name) {
+    public Visitor(Long id, String name) {
         this.id = id;
         this.name = name;
     }

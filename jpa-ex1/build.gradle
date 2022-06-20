@@ -1,0 +1,26 @@
+plugins {
+//    id 'org.springframework.boot' version '2.7.0'
+//    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+}
+
+group = 'jpa-basic'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.hibernate:hibernate-entitymanager:5.4.13.Final'
+    implementation 'javax.xml.bind:jaxb-api:2.3.0'
+    implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.2'
+    runtimeOnly 'com.h2database:h2:1.4.199'
+//    implementation 'org.springframework.boot:spring-boot-starter'
+//    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

@@ -96,8 +96,11 @@ fabric.properties
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
 
+.target
+
 ### Gradle ###
 .gradle
+/gradle
 **/build/
 !src/**/build/
 

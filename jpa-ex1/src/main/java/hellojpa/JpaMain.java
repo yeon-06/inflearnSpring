@@ -1,5 +1,6 @@
 package hellojpa;
 
+import hellojpa.domain.Visitor;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -31,26 +32,26 @@ public class JpaMain {
     }
 
     private static void insert(EntityManager entityManager) {
-        Member member = new Member(1L, "yeonLog");
-        entityManager.persist(member);
+        Visitor visitor = new Visitor(1L, "yeonLog");
+        entityManager.persist(visitor);
     }
 
-    private static Member selectOne(EntityManager entityManager) {
-        return entityManager.find(Member.class, 1L);
+    private static Visitor selectOne(EntityManager entityManager) {
+        return entityManager.find(Visitor.class, 1L);
     }
 
     private static void delete(EntityManager entityManager) {
-        Member member = selectOne(entityManager);
-        entityManager.remove(member);
+        Visitor visitor = selectOne(entityManager);
+        entityManager.remove(visitor);
     }
 
     private static void update(EntityManager entityManager) {
-        Member member = selectOne(entityManager);
-        member.setName("연로그");
+        Visitor visitor = selectOne(entityManager);
+        visitor.setName("연로그");
     }
 
-    private static List<Member> select(EntityManager entityManager) {
-        return entityManager.createQuery("select m from Member as m", Member.class)
+    private static List<Visitor> select(EntityManager entityManager) {
+        return entityManager.createQuery("select v from Visitor as v", Visitor.class)
                 .setFirstResult(1)
                 .setMaxResults(5)
                 .getResultList();
