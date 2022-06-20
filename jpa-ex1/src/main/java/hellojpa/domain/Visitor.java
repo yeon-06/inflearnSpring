@@ -1,12 +1,10 @@
 package hellojpa.domain;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 public class Visitor {
@@ -22,13 +20,12 @@ public class Visitor {
     private String name;
 
     @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createDate;
+    private LocalDateTime createDate;
 
     public Visitor(String account, String name) {
         this.account = account;
         this.name = name;
-        this.createDate = new Date();
+        this.createDate = LocalDateTime.now();
     }
 
     public void setName(String name) {
@@ -47,7 +44,7 @@ public class Visitor {
         return account;
     }
 
-    public Date getCreateDate() {
+    public LocalDateTime getCreateDate() {
         return createDate;
     }
 
