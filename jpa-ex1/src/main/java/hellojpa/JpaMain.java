@@ -11,13 +11,19 @@ public class JpaMain {
 
     public static void main(String[] args) {
 
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hello"); // 하나만 생성해 애플리케이션 전체에서 공유
-        EntityManager entityManager = entityManagerFactory.createEntityManager(); // 고객의 요청이 올때마다 생성 (스레드 간 공유 X)
-        EntityTransaction transaction = entityManager.getTransaction(); // 데이터의 모든 변경은 트랜잭션 내부에서 실행할 것
+        // 하나만 생성해 애플리케이션 전체에서 공유
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hello");
+
+        // 고객의 요청이 올때마다 생성 (스레드 간 공유 X)
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        // 데이터의 모든 변경은 트랜잭션 내부에서 실행할 것
+        EntityTransaction transaction = entityManager.getTransaction();
 
         transaction.begin();
 
         try {
+            insert(entityManager);
             select(entityManager);
 
             transaction.commit();
@@ -33,7 +39,7 @@ public class JpaMain {
     }
 
     private static void insert(EntityManager entityManager) {
-        Visitor visitor = new Visitor(1L, "yeonLog");
+        Visitor visitor = new Visitor("yeonLog", "연로그");
         entityManager.persist(visitor);
     }
 
