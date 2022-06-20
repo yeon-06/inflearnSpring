@@ -24,7 +24,8 @@ public class JpaMain {
 
         try {
             insert(entityManager);
-            select(entityManager);
+            List<Visitor> visitors = select(entityManager);
+            printList(visitors);
 
             transaction.commit();
 
@@ -62,5 +63,9 @@ public class JpaMain {
                 .setFirstResult(1)
                 .setMaxResults(5)
                 .getResultList();
+    }
+
+    private static <T> void printList(List<T> list) {
+        list.forEach(System.out::println);
     }
 }

@@ -22,6 +22,9 @@ public class Visitor {
     @Column(nullable = false)
     private LocalDateTime createDate;
 
+    protected Visitor() {
+    }
+
     public Visitor(String account, String name) {
         this.account = account;
         this.name = name;
@@ -50,9 +53,11 @@ public class Visitor {
 
     @Override
     public String toString() {
-        return "Member{" +
+        return "Visitor{" +
                 "id=" + id +
+                ", account='" + account + '\'' +
                 ", name='" + name + '\'' +
+                ", createDate=" + createDate +
                 '}';
     }
 }
