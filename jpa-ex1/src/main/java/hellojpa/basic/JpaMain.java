@@ -1,6 +1,5 @@
-package hellojpa;
+package hellojpa.basic;
 
-import hellojpa.domain.Visitor;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
