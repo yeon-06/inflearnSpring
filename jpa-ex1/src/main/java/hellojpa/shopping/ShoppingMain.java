@@ -1,5 +1,6 @@
 package hellojpa.shopping;
 
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -16,17 +17,14 @@ public class ShoppingMain {
         transaction.begin();
 
         try {
-            Team team = new Team("플랫폼팀");
-            entityManager.persist(team);
+            Team team = createTeam(entityManager);
+            createUser(entityManager, team);
+            createUser(entityManager, team);
 
-            User user = new User("yeonlog", "연로그", team);
-            entityManager.persist(user);
+            clear(entityManager);
 
-            entityManager.flush();
-            entityManager.clear();
-
-            User findUser = entityManager.find(User.class, user.getId());
-            System.out.println(findUser);
+            Team findTeam = entityManager.find(Team.class, team.getId());
+            printList(findTeam.getUsers());
 
             transaction.commit();
 
@@ -38,5 +36,26 @@ public class ShoppingMain {
             entityManager.close();
             entityManagerFactory.close();
         }
+    }
+
+    private static Team createTeam(EntityManager entityManager) {
+        Team team = new Team("플랫폼팀");
+        entityManager.persist(team);
+        return team;
+    }
+
+    private static User createUser(EntityManager entityManager, Team team) {
+        User user = new User("yeonlog", "연로그", team);
+        entityManager.persist(user);
+        return user;
+    }
+
+    private static void clear(EntityManager entityManager) {
+        entityManager.flush();
+        entityManager.clear();
+    }
+
+    private static <T> void printList(List<T> list) {
+        list.forEach(System.out::println);
     }
 }
