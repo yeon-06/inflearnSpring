@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -19,6 +21,10 @@ public class User {
 
     private String account;
 
+    @ManyToOne
+    @JoinColumn(name = "team_id")
+    private Team team;
+
     private String name;
 
     private LocalDateTime createDate;
@@ -26,9 +32,10 @@ public class User {
     protected User() {
     }
 
-    public User(String account, String name) {
+    public User(String account, String name, Team team) {
         this.account = account;
         this.name = name;
+        this.team = team;
         this.createDate = LocalDateTime.now();
     }
 
@@ -40,11 +47,26 @@ public class User {
         return account;
     }
 
+    public Team getTeam() {
+        return team;
+    }
+
     public String getName() {
         return name;
     }
 
     public LocalDateTime getCreateDate() {
         return createDate;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", account='" + account + '\'' +
+                ", team=" + team +
+                ", name='" + name + '\'' +
+                ", createDate=" + createDate +
+                '}';
     }
 }
