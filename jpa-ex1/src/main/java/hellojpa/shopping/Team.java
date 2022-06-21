@@ -30,6 +30,10 @@ public class Team {
         this.name = name;
     }
 
+    public void addUser(User user) {
+        users.add(user);
+    }
+
     public Long getId() {
         return id;
     }

@@ -35,8 +35,13 @@ public class User {
     public User(String account, String name, Team team) {
         this.account = account;
         this.name = name;
-        this.team = team;
         this.createDate = LocalDateTime.now();
+        changeTeam(team);
+    }
+
+    public void changeTeam(Team team) {
+        this.team = team;
+        team.addUser(this);
     }
 
     public Long getId() {
