@@ -1,6 +1,8 @@
 package hellojpa.shopping;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -8,6 +10,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -19,28 +24,37 @@ public class Order {
     @Column(name = "order_id")
     private Long id;
 
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     private LocalDateTime orderDate;
 
     @Enumerated(value = EnumType.STRING)
     private Status status;
 
+    @OneToMany(mappedBy = "order")
+    private List<OrderItem> orderItems = new ArrayList<>();
+
     protected Order() {
     }
 
-    public Order(Long userId, Status status) {
-        this.userId = userId;
+    public Order(User user, Status status) {
+        this.user = user;
         this.orderDate = LocalDateTime.now();
         this.status = status;
+    }
+
+    public void addOrderItem(OrderItem orderItem) {
+        orderItems.add(orderItem);
     }
 
     public Long getId() {
         return id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
     public LocalDateTime getOrderDate() {
@@ -51,13 +65,17 @@ public class Order {
         return status;
     }
 
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
                 "id=" + id +
-                ", userId=" + userId +
+                ", user=" + user +
                 ", orderDate=" + orderDate +
-                ", status='" + status + '\'' +
+                ", status=" + status +
                 '}';
     }
 }

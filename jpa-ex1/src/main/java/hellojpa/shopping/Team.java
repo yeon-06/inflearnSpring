@@ -1,13 +1,10 @@
 package hellojpa.shopping;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 @Entity
 public class Team {
@@ -19,19 +16,11 @@ public class Team {
 
     private String name;
 
-    @OneToMany(mappedBy = "team")
-    // mappedBy가 있다? 연관 관계의 주인이 아니다.
-    private List<User> users = new ArrayList<>();
-
     protected Team() {
     }
 
     public Team(String name) {
         this.name = name;
-    }
-
-    public void addUser(User user) {
-        users.add(user);
     }
 
     public Long getId() {
@@ -42,9 +31,6 @@ public class Team {
         return name;
     }
 
-    public List<User> getUsers() {
-        return users;
-    }
 
     @Override
     public String toString() {

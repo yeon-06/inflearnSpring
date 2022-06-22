@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class OrderItem {
@@ -14,9 +16,13 @@ public class OrderItem {
     @Column(name = "order_item_id")
     private Long id;
 
-    private Long orderId;
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
 
-    private Long itemId;
+    @ManyToOne
+    @JoinColumn(name = "item_id")
+    private Item item;
 
     private int price;
 
@@ -25,10 +31,10 @@ public class OrderItem {
     protected OrderItem() {
     }
 
-    public OrderItem(Long id, Long orderId, Long itemId, int price, int quantity) {
-        this.id = id;
-        this.orderId = orderId;
-        this.itemId = itemId;
+    public OrderItem(Order order, Item item, int price, int quantity) {
+        this.order = order;
+        order.addOrderItem(this);
+        this.item = item;
         this.price = price;
         this.quantity = quantity;
     }
@@ -37,12 +43,12 @@ public class OrderItem {
         return id;
     }
 
-    public Long getOrderId() {
-        return orderId;
+    public Order getOrder() {
+        return order;
     }
 
-    public Long getItemId() {
-        return itemId;
+    public Item getItem() {
+        return item;
     }
 
     public int getPrice() {
@@ -53,12 +59,17 @@ public class OrderItem {
         return quantity;
     }
 
+    public void setOrder(Order order) {
+        this.order = order;
+        order.addOrderItem(this);
+    }
+
     @Override
     public String toString() {
         return "OrderItem{" +
                 "id=" + id +
-                ", orderId=" + orderId +
-                ", itemId=" + itemId +
+                ", order=" + order +
+                ", item=" + item +
                 ", price=" + price +
                 ", quantity=" + quantity +
                 '}';

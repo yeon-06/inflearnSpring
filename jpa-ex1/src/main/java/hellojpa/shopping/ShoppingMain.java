@@ -8,23 +8,25 @@ import javax.persistence.Persistence;
 
 public class ShoppingMain {
 
+    private static final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hello");
+    private static final EntityManager entityManager = entityManagerFactory.createEntityManager();
+
     public static void main(String[] args) {
 
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hello");
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
-
         transaction.begin();
 
         try {
-            Team team = createTeam(entityManager);
-            createUser(entityManager, team);
-            createUser(entityManager, team);
+            Team team = createTeam();
+            User user = createUser(team);
+            Item item = createItem();
+            Order order = createOrder(user);
+            createOrderItem(item, order);
 
-            clear(entityManager);
+            clear();
 
-            Team findTeam = entityManager.find(Team.class, team.getId());
-            printList(findTeam.getUsers());
+            Order findOrder = entityManager.find(Order.class, order.getId());
+            printList(findOrder.getOrderItems());
 
             transaction.commit();
 
@@ -38,19 +40,36 @@ public class ShoppingMain {
         }
     }
 
-    private static Team createTeam(EntityManager entityManager) {
+    private static Team createTeam() {
         Team team = new Team("플랫폼팀");
         entityManager.persist(team);
         return team;
     }
 
-    private static User createUser(EntityManager entityManager, Team team) {
+    private static User createUser(Team team) {
         User user = new User("yeonlog", "연로그", team);
         entityManager.persist(user);
         return user;
     }
 
-    private static void clear(EntityManager entityManager) {
+    private static Item createItem() {
+        Item item = new Item("상품", 1_000, 10);
+        entityManager.persist(item);
+        return item;
+    }
+
+    private static Order createOrder(User user) {
+        Order order = new Order(user, Status.ORDER);
+        entityManager.persist(order);
+        return order;
+    }
+
+    private static void createOrderItem(Item item, Order order) {
+        OrderItem orderItem = new OrderItem(order, item, 2_000, 2);
+        entityManager.persist(orderItem);
+    }
+
+    private static void clear() {
         entityManager.flush();
         entityManager.clear();
     }
