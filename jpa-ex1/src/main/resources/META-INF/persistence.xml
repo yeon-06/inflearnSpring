@@ -10,6 +10,8 @@
         <class>hellojpa.shopping.OrderItem</class>
         <class>hellojpa.shopping.User</class>
         <class>hellojpa.shopping.Team</class>
+        <class>hellojpa.shopping.Book</class>
+        <class>hellojpa.shopping.Computer</class>
         <properties>
             <!-- 필수 속성 -->
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>

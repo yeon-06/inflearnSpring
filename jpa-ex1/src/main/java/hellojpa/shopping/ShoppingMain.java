@@ -17,17 +17,8 @@ public class ShoppingMain {
         transaction.begin();
 
         try {
-            Team team = createTeam();
-            User user = createUser(team);
-            Item item = createItem();
-            Order order = createOrder(user);
-            createOrderItem(item, order);
-
-            clear();
-
-            Order findOrder = entityManager.find(Order.class, order.getId());
-            printList(findOrder.getOrderItems());
-
+            createBook();
+            createComputer();
             transaction.commit();
 
         } catch (Exception e) {
@@ -52,8 +43,14 @@ public class ShoppingMain {
         return user;
     }
 
-    private static Item createItem() {
-        Item item = new Item("상품", 1_000, 10);
+    private static Item createBook() {
+        Item item = new Book("상품", 1_000, 10, "연로그", "1234");
+        entityManager.persist(item);
+        return item;
+    }
+
+    private static Item createComputer() {
+        Item item = new Computer("상품", 1_000, 10, 4);
         entityManager.persist(item);
         return item;
     }
