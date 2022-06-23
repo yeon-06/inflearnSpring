@@ -1,6 +1,5 @@
 package hellojpa.shopping;
 
-import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,8 +26,6 @@ public class User {
 
     private String name;
 
-    private LocalDateTime createDate;
-
     protected User() {
     }
 
@@ -36,7 +33,6 @@ public class User {
         this.account = account;
         this.name = name;
         this.team = team;
-        this.createDate = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -55,10 +51,6 @@ public class User {
         return name;
     }
 
-    public LocalDateTime getCreateDate() {
-        return createDate;
-    }
-
     @Override
     public String toString() {
         return "User{" +
@@ -66,7 +58,6 @@ public class User {
                 ", account='" + account + '\'' +
                 ", team=" + team +
                 ", name='" + name + '\'' +
-                ", createDate=" + createDate +
                 '}';
     }
 }
