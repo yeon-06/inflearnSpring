@@ -1,6 +1,7 @@
 package study.querydsl;
 
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -220,7 +221,41 @@ class QuerydslApplicationTests {
                 .fetchOne();
 
         // then
+        assert findMember != null;
         boolean loaded = entityManagerFactory.getPersistenceUnitUtil().isLoaded(findMember.getTeam());
         assertThat(loaded).isTrue();
+    }
+
+    // 서브 쿼리 예제 - 나이가 가장 많은 회원 조회
+    @Test
+    void subQuery() {
+        // given
+        QMember memberSub = new QMember("memberSub");
+
+        // when
+        List<Member> maxAgeMembers = queryFactory.selectFrom(member)
+                .where(member.age.eq(
+                        JPAExpressions.select(memberSub.age.max())
+                                .from(memberSub)
+                )).fetch();
+
+        // then
+        assertThat(maxAgeMembers).extracting("age")
+                .containsOnly(member1.getAge());
+    }
+
+    // case문 예제
+    @Test
+    void case_ex() {
+        // given & when
+        List<String> memberNames = queryFactory.select(member.username
+                        .when("yeonlog").then("연로그")
+                        .when("logyeon").then("로그연")
+                        .otherwise("기타"))
+                .from(member)
+                .fetch();
+
+        // then
+        assertThat(memberNames).containsOnly("연로그", "로그연");
     }
 }
