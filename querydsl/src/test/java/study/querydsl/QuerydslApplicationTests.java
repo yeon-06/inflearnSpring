@@ -52,7 +52,8 @@ class QuerydslApplicationTests {
         // given
         String username = member1.getUsername();
         JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
-        QMember qMember = new QMember("m");
+        QMember qMember = QMember.member; // static으로 선언되어 있어서 바로 사용하면 된다.
+//        QMember qMember = new QMember("m");   // 같은 테이블을 join하는 경우 선언해서 사용해야 한다.
 
         // when
         Member findMember = queryFactory.select(qMember)
