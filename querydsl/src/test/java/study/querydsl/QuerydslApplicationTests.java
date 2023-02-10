@@ -1,20 +1,25 @@
 package study.querydsl;
 
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import study.querydsl.dto.MemberWithTeamDto;
 import study.querydsl.entity.Member;
 import study.querydsl.entity.QMember;
 import study.querydsl.entity.Team;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static study.querydsl.entity.QMember.member;
+import static study.querydsl.entity.QTeam.team;
 
 
 @SpringBootTest
@@ -24,8 +29,13 @@ class QuerydslApplicationTests {
     @Autowired
     private EntityManager entityManager;
 
+    @PersistenceUnit
+    private EntityManagerFactory entityManagerFactory;
+
     private JPAQueryFactory queryFactory;
 
+    private Team team1;
+    private Team team2;
     private Member member1;
     private Member member2;
     private Member member3;
@@ -34,9 +44,9 @@ class QuerydslApplicationTests {
     void init() {
         queryFactory = new JPAQueryFactory(entityManager);
 
-        Team team1 = new Team("team A");
+        team1 = new Team("team A");
         entityManager.persist(team1);
-        Team team2 = new Team("team B");
+        team2 = new Team("team B");
         entityManager.persist(team2);
 
         member1 = new Member("yeonlog", 27, team1);
@@ -115,5 +125,102 @@ class QuerydslApplicationTests {
 
         // then
         assertThat(result).isEqualTo(27);
+    }
+
+    // 조인 예제 - team1에 소속된 멤버 조회
+    @Test
+    void join() {
+        // given
+        String teamName = team1.getName();
+
+        // when
+        List<Member> members = queryFactory.selectFrom(member)
+                .join(member.team, team)
+                .where(team.name.eq(teamName))
+                .fetch();
+
+        // then
+        assertThat(members).contains(member1);
+    }
+
+    // 세타 조인 예제 - Team 이름과 동일한 이름의 Member 조회
+    @Test
+    void theta_join() {
+        // given
+        String teamName = team1.getName();
+        Member newMember = new Member(teamName);
+        entityManager.persist(newMember);
+
+        // when
+        List<Member> members = queryFactory.select(member)
+                .from(member, team)
+                .where(member.username.eq(team.name))
+                .fetch();
+
+        // then
+        assertThat(members).contains(newMember);
+    }
+
+    // on절 조인 예제 - 팀과 멤버를 조인. 단, 멤버는 전체를 조회하고 팀은 team1과 동일한 이름만 조회한다.
+    @Test
+    void on_join() {
+        // given
+        String teamName = team1.getName();
+
+        // when
+        List<MemberWithTeamDto> result = queryFactory.select(
+                        Projections.constructor(MemberWithTeamDto.class,
+                                member,
+                                team))
+                .from(member)
+                .join(member.team, team)
+                .leftJoin(member.team, team).on(team.name.eq(teamName))
+                .fetch();
+
+        // then
+        assertThat(result).extracting("team")
+                .extracting("name")
+                .contains(team1.getName())
+                .doesNotContain(team2.getName());
+    }
+
+    // fetch 조인 예제 - fetch join 미적용
+    @Test
+    void no_fetch_join() {
+        // given
+        entityManager.flush();
+        entityManager.clear();
+
+        String username = member1.getUsername();
+
+        // when
+        Member findMember = queryFactory.selectFrom(member)
+                .join(member.team, team)
+                .where(member.username.eq(username))
+                .fetchOne();
+
+        // then
+        boolean loaded = entityManagerFactory.getPersistenceUnitUtil().isLoaded(findMember.getTeam());
+        assertThat(loaded).isFalse();
+    }
+
+    // fetch 조인 예제 - fetch join 적용
+    @Test
+    void fetch_join() {
+        // given
+        entityManager.flush();
+        entityManager.clear();
+
+        String username = member1.getUsername();
+
+        // when
+        Member findMember = queryFactory.selectFrom(member)
+                .join(member.team, team).fetchJoin()
+                .where(member.username.eq(username))
+                .fetchOne();
+
+        // then
+        boolean loaded = entityManagerFactory.getPersistenceUnitUtil().isLoaded(findMember.getTeam());
+        assertThat(loaded).isTrue();
     }
 }
