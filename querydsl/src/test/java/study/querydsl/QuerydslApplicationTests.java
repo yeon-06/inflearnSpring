@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import study.querydsl.dto.MemberDto;
 import study.querydsl.dto.MemberWithTeamDto;
+import study.querydsl.dto.QMemberDto;
 import study.querydsl.entity.Member;
 import study.querydsl.entity.QMember;
 import study.querydsl.entity.Team;
@@ -311,6 +312,21 @@ class QuerydslApplicationTests {
 					member.age
 				)
 			).from(member)
+			.where(member.id.eq(member1.getId()))
+			.fetchOne();
+
+		assertThat(memberDto.getUsername()).isEqualTo(member1.getUsername());
+		assertThat(memberDto.getAge()).isEqualTo(member1.getAge());
+	}
+
+	// 1. DTO 주생성자에 @QueryProjection 추가
+	// 2. compileQuerydsl
+	@Test
+	void useQueryProjection() {
+		// b: 컴파일 시점에 타입 체크 가능 (생성자 방식 같은건 런타임 시점에야 확인 가능)
+		// q: Q 클래스 생성 필수. DTO에 QueryDSL에 대한 의존성 추가됨.
+		MemberDto memberDto = queryFactory.select(new QMemberDto(member.username, member.age))
+			.from(member)
 			.where(member.id.eq(member1.getId()))
 			.fetchOne();
 
