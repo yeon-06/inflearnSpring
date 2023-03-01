@@ -1,7 +1,6 @@
 package study.querydsl;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static study.querydsl.entity.QMember.member;
 import static study.querydsl.entity.QTeam.team;
 
 import com.querydsl.core.types.Projections;
@@ -34,13 +33,13 @@ class QuerydslApplicationTests {
 	@PersistenceUnit
 	private EntityManagerFactory entityManagerFactory;
 
+	private final QMember qMember = QMember.member;
+
 	private JPAQueryFactory queryFactory;
 
 	private Team team1;
 	private Team team2;
-	private Member member1;
-	private Member member2;
-	private Member member3;
+	private Member member;
 
 	@BeforeEach
 	void init() {
@@ -51,10 +50,10 @@ class QuerydslApplicationTests {
 		team2 = new Team("team B");
 		entityManager.persist(team2);
 
-		member1 = new Member("yeonlog", 27, team1);
-		member2 = new Member("logyeon", 25, team2);
-		member3 = new Member("logyeon", 20, team2);
-		entityManager.persist(member1);
+		member = new Member("yeonlog", 27, team1);
+		Member member2 = new Member("logyeon", 25, team2);
+		Member member3 = new Member("logyeon", 20, team2);
+		entityManager.persist(member);
 		entityManager.persist(member2);
 		entityManager.persist(member3);
 	}
@@ -62,7 +61,7 @@ class QuerydslApplicationTests {
 	@Test
 	void selectWithJpql() {
 		// given
-		String username = member1.getUsername();
+		String username = member.getUsername();
 
 		// when
 		Member findMember = entityManager.createQuery("select m from Member m where m.username = :username", Member.class)
@@ -77,8 +76,8 @@ class QuerydslApplicationTests {
 	@Test
 	void selectWithQuerydsl() {
 		// given
-		String username = member1.getUsername();
-		QMember qMember = member; // static으로 선언되어 있어서 바로 사용하면 된다.
+		String username = member.getUsername();
+		QMember qMember = QMember.member; // static으로 선언되어 있어서 바로 사용하면 된다.
 //        QMember qMember = new QMember("m");   // 같은 테이블을 join하는 경우 선언해서 사용해야 한다.
 
 		// when
@@ -88,6 +87,7 @@ class QuerydslApplicationTests {
 			.fetchOne();
 
 		// then
+		assertThat(findMember).isNotNull();
 		assertThat(findMember.getUsername()).isEqualTo(username);
 	}
 
@@ -95,8 +95,8 @@ class QuerydslApplicationTests {
 	@Test
 	void selectAll() {
 		// given & when=
-		List<Member> members = queryFactory.select(member)
-			.from(member)
+		List<Member> members = queryFactory.select(qMember)
+			.from(qMember)
 			.fetch();
 
 		// then
@@ -107,8 +107,8 @@ class QuerydslApplicationTests {
 	@Test
 	void paging() {
 		// given & when
-		List<Member> members = queryFactory.selectFrom(member)
-			.orderBy(member.age.desc())
+		List<Member> members = queryFactory.selectFrom(qMember)
+			.orderBy(qMember.age.desc())
 			.offset(1)
 			.limit(2)
 			.fetch();
@@ -121,8 +121,8 @@ class QuerydslApplicationTests {
 	@Test
 	void max() {
 		// given & when
-		Integer result = queryFactory.select(member.age.max())
-			.from(member)
+		Integer result = queryFactory.select(qMember.age.max())
+			.from(qMember)
 			.fetchOne();
 
 		// then
@@ -136,13 +136,13 @@ class QuerydslApplicationTests {
 		String teamName = team1.getName();
 
 		// when
-		List<Member> members = queryFactory.selectFrom(member)
-			.join(member.team, team)
+		List<Member> members = queryFactory.selectFrom(qMember)
+			.join(qMember.team, team)
 			.where(team.name.eq(teamName))
 			.fetch();
 
 		// then
-		assertThat(members).contains(member1);
+		assertThat(members).contains(member);
 	}
 
 	// 세타 조인 예제 - Team 이름과 동일한 이름의 Member 조회
@@ -154,9 +154,9 @@ class QuerydslApplicationTests {
 		entityManager.persist(newMember);
 
 		// when
-		List<Member> members = queryFactory.select(member)
-			.from(member, team)
-			.where(member.username.eq(team.name))
+		List<Member> members = queryFactory.select(qMember)
+			.from(qMember, team)
+			.where(qMember.username.eq(team.name))
 			.fetch();
 
 		// then
@@ -172,11 +172,11 @@ class QuerydslApplicationTests {
 		// when
 		List<MemberWithTeamDto> result = queryFactory.select(
 				Projections.constructor(MemberWithTeamDto.class,
-					member,
+					qMember,
 					team))
-			.from(member)
-			.join(member.team, team)
-			.leftJoin(member.team, team).on(team.name.eq(teamName))
+			.from(qMember)
+			.join(qMember.team, team)
+			.leftJoin(qMember.team, team).on(team.name.eq(teamName))
 			.fetch();
 
 		// then
@@ -193,15 +193,16 @@ class QuerydslApplicationTests {
 		entityManager.flush();
 		entityManager.clear();
 
-		String username = member1.getUsername();
+		String username = member.getUsername();
 
 		// when
-		Member findMember = queryFactory.selectFrom(member)
-			.join(member.team, team)
-			.where(member.username.eq(username))
+		Member findMember = queryFactory.selectFrom(qMember)
+			.join(qMember.team, team)
+			.where(qMember.username.eq(username))
 			.fetchOne();
 
 		// then
+		assertThat(findMember).isNotNull();
 		boolean loaded = entityManagerFactory.getPersistenceUnitUtil().isLoaded(findMember.getTeam());
 		assertThat(loaded).isFalse();
 	}
@@ -213,12 +214,12 @@ class QuerydslApplicationTests {
 		entityManager.flush();
 		entityManager.clear();
 
-		String username = member1.getUsername();
+		String username = member.getUsername();
 
 		// when
-		Member findMember = queryFactory.selectFrom(member)
-			.join(member.team, team).fetchJoin()
-			.where(member.username.eq(username))
+		Member findMember = queryFactory.selectFrom(qMember)
+			.join(qMember.team, team).fetchJoin()
+			.where(qMember.username.eq(username))
 			.fetchOne();
 
 		// then
@@ -234,26 +235,26 @@ class QuerydslApplicationTests {
 		QMember memberSub = new QMember("memberSub");
 
 		// when
-		List<Member> maxAgeMembers = queryFactory.selectFrom(member)
-			.where(member.age.eq(
+		List<Member> maxAgeMembers = queryFactory.selectFrom(qMember)
+			.where(qMember.age.eq(
 				JPAExpressions.select(memberSub.age.max())
 					.from(memberSub)
 			)).fetch();
 
 		// then
 		assertThat(maxAgeMembers).extracting("age")
-			.containsOnly(member1.getAge());
+			.containsOnly(member.getAge());
 	}
 
 	// case문 예제
 	@Test
 	void case_ex() {
 		// given & when
-		List<String> memberNames = queryFactory.select(member.username
+		List<String> memberNames = queryFactory.select(qMember.username
 				.when("yeonlog").then("연로그")
 				.when("logyeon").then("로그연")
 				.otherwise("기타"))
-			.from(member)
+			.from(qMember)
 			.fetch();
 
 		// then
@@ -266,18 +267,19 @@ class QuerydslApplicationTests {
 		// 필수인 생성자/메서드 없음.
 		MemberDto memberDto = queryFactory.select(
 				Projections.fields(MemberDto.class,
-					member.username,
-					member.age
+					qMember.username,
+					qMember.age
 					// 필드명이 동일하지 않는 경우 아래 2가지 방법이 있음
 //					member.age.as("memberAge")
 //					ExpressionUtils.as(member.age, "memberAge")
 				)
-			).from(member)
-			.where(member.id.eq(member1.getId()))
+			).from(qMember)
+			.where(qMember.id.eq(member.getId()))
 			.fetchOne();
 
-		assertThat(memberDto.getUsername()).isEqualTo(member1.getUsername());
-		assertThat(memberDto.getAge()).isEqualTo(member1.getAge());
+		assertThat(memberDto).isNotNull();
+		assertThat(memberDto.getUsername()).isEqualTo(member.getUsername());
+		assertThat(memberDto.getAge()).isEqualTo(member.getAge());
 	}
 
 	@Test
@@ -285,15 +287,16 @@ class QuerydslApplicationTests {
 		// AllArgsConstructor 필수
 		MemberDto memberDto = queryFactory.select(
 				Projections.constructor(MemberDto.class,
-					member.username,
-					member.age
+					qMember.username,
+					qMember.age
 				)
-			).from(member)
-			.where(member.id.eq(member1.getId()))
+			).from(qMember)
+			.where(qMember.id.eq(member.getId()))
 			.fetchOne();
 
-		assertThat(memberDto.getUsername()).isEqualTo(member1.getUsername());
-		assertThat(memberDto.getAge()).isEqualTo(member1.getAge());
+		assertThat(memberDto).isNotNull();
+		assertThat(memberDto.getUsername()).isEqualTo(member.getUsername());
+		assertThat(memberDto.getAge()).isEqualTo(member.getAge());
 	}
 
 	@Test
@@ -308,15 +311,16 @@ class QuerydslApplicationTests {
 		 */
 		MemberDto memberDto = queryFactory.select(
 				Projections.bean(MemberDto.class,
-					member.username,
-					member.age
+					qMember.username,
+					qMember.age
 				)
-			).from(member)
-			.where(member.id.eq(member1.getId()))
+			).from(qMember)
+			.where(qMember.id.eq(member.getId()))
 			.fetchOne();
 
-		assertThat(memberDto.getUsername()).isEqualTo(member1.getUsername());
-		assertThat(memberDto.getAge()).isEqualTo(member1.getAge());
+		assertThat(memberDto).isNotNull();
+		assertThat(memberDto.getUsername()).isEqualTo(member.getUsername());
+		assertThat(memberDto.getAge()).isEqualTo(member.getAge());
 	}
 
 	// 1. DTO 주생성자에 @QueryProjection 추가
@@ -325,12 +329,14 @@ class QuerydslApplicationTests {
 	void useQueryProjection() {
 		// b: 컴파일 시점에 타입 체크 가능 (생성자 방식 같은건 런타임 시점에야 확인 가능)
 		// q: Q 클래스 생성 필수. DTO에 QueryDSL에 대한 의존성 추가됨.
-		MemberDto memberDto = queryFactory.select(new QMemberDto(member.username, member.age))
-			.from(member)
-			.where(member.id.eq(member1.getId()))
+		MemberDto memberDto = queryFactory.select(new QMemberDto(qMember.username, qMember.age))
+			.from(qMember)
+			.where(qMember.id.eq(member.getId()))
 			.fetchOne();
 
-		assertThat(memberDto.getUsername()).isEqualTo(member1.getUsername());
-		assertThat(memberDto.getAge()).isEqualTo(member1.getAge());
+		assertThat(memberDto).isNotNull();
+		assertThat(memberDto.getUsername()).isEqualTo(member.getUsername());
+		assertThat(memberDto.getAge()).isEqualTo(member.getAge());
 	}
+
 }
