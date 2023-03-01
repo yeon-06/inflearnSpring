@@ -3,6 +3,8 @@ package study.querydsl;
 import static org.assertj.core.api.Assertions.assertThat;
 import static study.querydsl.entity.QTeam.team;
 
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -339,4 +341,42 @@ class QuerydslApplicationTests {
 		assertThat(memberDto.getAge()).isEqualTo(member.getAge());
 	}
 
+
+	// BooleanBuilder를 이용해 동적 쿼리 생성
+	@Test
+	void dynamicQuery_BooleanBuilder() {
+		List<Member> members = searchMember_BooleanBuilder(null);
+		List<Member> membersWithName = searchMember_BooleanBuilder(member.getUsername());
+
+		assertThat(members.size()).isNotEqualTo(membersWithName.size());
+	}
+
+	private List<Member> searchMember_BooleanBuilder(String username) {
+		BooleanBuilder builder = new BooleanBuilder();
+		if (username != null) {
+			builder.and(qMember.username.eq(username));
+		}
+		return queryFactory.selectFrom(qMember)
+			.where(builder)
+			.fetch();
+	}
+
+	// 다중조건을 이용해 동적 쿼리 생성
+	@Test
+	void dynamicQuery_WhereParam() {
+		List<Member> members = searchMember_where(null);
+		List<Member> membersWithName = searchMember_where(member.getUsername());
+
+		assertThat(members.size()).isNotEqualTo(membersWithName.size());
+	}
+
+	private List<Member> searchMember_where(String username) {
+		return queryFactory.selectFrom(qMember)
+			.where(usernameEq(username))
+			.fetch();
+	}
+
+	private Predicate usernameEq(String username) {
+		return username == null ? null : qMember.username.eq(username);
+	}
 }
