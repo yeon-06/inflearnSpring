@@ -9,6 +9,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
@@ -378,5 +379,25 @@ class QuerydslApplicationTests {
 
 	private Predicate usernameEq(String username) {
 		return username == null ? null : qMember.username.eq(username);
+	}
+
+	@Test
+	void bulk() {
+		int updateAge = 25;
+
+		queryFactory.update(qMember)
+			.set(qMember.age, updateAge)
+			.execute();
+
+		entityManager.flush();
+		entityManager.clear();
+
+		List<Integer> memberAges = queryFactory.selectFrom(qMember)
+			.fetch()
+			.stream()
+			.map(Member::getAge)
+			.collect(Collectors.toList());
+
+		assertThat(memberAges).containsOnly(updateAge);
 	}
 }
