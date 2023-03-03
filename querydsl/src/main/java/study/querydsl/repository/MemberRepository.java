@@ -1,5 +1,7 @@
 package study.querydsl.repository;
 
+import static study.querydsl.entity.QMember.member;
+
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -22,13 +24,13 @@ public class MemberRepository {
 	}
 
 	public List<Member> findByName(String username) {
-		return entityManager.createQuery("select m from Member m where m.username = :username", Member.class)
-			.setParameter("username", username)
-			.getResultList();
+		return jpaQueryFactory.selectFrom(member)
+			.where(member.username.eq(username))
+			.fetch();
 	}
 
 	public List<Member> findAll() {
-		return entityManager.createQuery("select m from Member m", Member.class)
-			.getResultList();
+		return jpaQueryFactory.selectFrom(member)
+			.fetch();
 	}
 }
