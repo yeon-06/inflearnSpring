@@ -13,12 +13,12 @@ import study.querydsl.dto.QMemberWithTeamDto;
 import study.querydsl.entity.Member;
 
 @Repository
-public class MemberRepository {
+public class MemberJpaRepository {
 
 	private final EntityManager entityManager;
 	private final JPAQueryFactory jpaQueryFactory;
 
-	public MemberRepository(EntityManager entityManager) {
+	public MemberJpaRepository(EntityManager entityManager) {
 		this.entityManager = entityManager;
 		this.jpaQueryFactory = new JPAQueryFactory(entityManager);
 	}

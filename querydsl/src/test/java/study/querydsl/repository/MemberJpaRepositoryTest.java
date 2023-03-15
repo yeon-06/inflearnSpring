@@ -14,13 +14,13 @@ import study.querydsl.entity.Team;
 
 @SpringBootTest
 @Transactional
-class MemberRepositoryTest {
+class MemberJpaRepositoryTest {
 
 	@Autowired
 	private EntityManager entityManager;
 
 	@Autowired
-	private MemberRepository memberRepository;
+	private MemberJpaRepository memberRepository;
 
 	@Test
 	void save() {
