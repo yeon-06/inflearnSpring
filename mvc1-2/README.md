@@ -2,11 +2,14 @@
 
 > 본 레포지토리는 김영한 님의 '[스프링 MVC 1편](https://inf.run/kMtp)' 강의를 수강하며 진행한 클론 코딩을 저장합니다.
 
+### 관련 레포지토리
+
+* [1편](../mvc1)
+* [3편](../mvc1-3)
+
 ***
 
 ### 목차
-
-* [1편](https://github.com/yeon-06/inflearnMvc1)
 
 * 스프링 MVC 기본 기능
   * [요청 매핑](https://yeonyeon.tistory.com/123)

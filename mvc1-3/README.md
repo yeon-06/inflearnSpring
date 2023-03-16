@@ -6,9 +6,10 @@
 
 ### 목차
 
-* Spring MVC에 관해
-    * [1편](https://github.com/yeon-06/inflearnMvc1)
-    * [2편](https://github.com/yeon-06/inflearnMVC1-2)  
+### 관련 레포지토리
+
+* [1편](../mvc1)
+* [2편](../mvc1-2)
 
 * 프로젝트 진행
 
