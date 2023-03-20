@@ -8,7 +8,7 @@ import javax.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import study.querydsl.dto.MemberWithTeamDto;
+import study.querydsl.dto.MemberInfoDto;
 import study.querydsl.entity.Member;
 import study.querydsl.entity.Team;
 
@@ -64,8 +64,6 @@ class MemberJpaRepositoryTest {
 		assertThat(members).hasSize(2);
 	}
 
-	// TODO: search_with_XXX 테스트 실패
-	// com.querydsl.core.types.ExpressionException:DTO의 생성자를 찾지 못함
 	@Test
 	void search_with_teamName() {
 		// given
@@ -76,7 +74,7 @@ class MemberJpaRepositoryTest {
 		clear();
 
 		// when
-		List<MemberWithTeamDto> result = memberRepository.search(null, team.getName());
+		List<MemberInfoDto> result = memberRepository.search(null, team.getName());
 
 		// then
 		assertThat(result).hasSize(2);
@@ -93,7 +91,7 @@ class MemberJpaRepositoryTest {
 		clear();
 
 		// when
-		List<MemberWithTeamDto> result = memberRepository.search(username, null);
+		List<MemberInfoDto> result = memberRepository.search(username, null);
 
 		// then
 		assertThat(result).hasSize(2);
@@ -110,7 +108,7 @@ class MemberJpaRepositoryTest {
 		clear();
 
 		// when
-		List<MemberWithTeamDto> result = memberRepository.search(username, team.getName());
+		List<MemberInfoDto> result = memberRepository.search(username, team.getName());
 
 		// then
 		assertThat(result).hasSize(1);

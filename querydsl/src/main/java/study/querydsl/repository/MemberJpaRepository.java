@@ -8,7 +8,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import javax.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
-import study.querydsl.dto.MemberWithTeamDto;
+import study.querydsl.dto.MemberInfoDto;
 import study.querydsl.dto.QMemberWithTeamDto;
 import study.querydsl.entity.Member;
 
@@ -38,7 +38,7 @@ public class MemberJpaRepository {
 			.fetch();
 	}
 
-	public List<MemberWithTeamDto> search(String username, String teamName) {
+	public List<MemberInfoDto> search(String username, String teamName) {
 		return jpaQueryFactory.select(
 				new QMemberWithTeamDto(member.id, member.username, member.team.name)
 			).from(member)

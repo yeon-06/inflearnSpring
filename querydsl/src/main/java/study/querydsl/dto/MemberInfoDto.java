@@ -4,14 +4,14 @@ import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 
 @Getter
-public class MemberWithTeamDto {
+public class MemberInfoDto {
 
-	private Long id;
-	private String username;
-	private String teamName;
+	private final Long id;
+	private final String username;
+	private final String teamName;
 
 	@QueryProjection
-	public MemberWithTeamDto(Long id, String username, String teamName) {
+	public MemberInfoDto(Long id, String username, String teamName) {
 		this.id = id;
 		this.username = username;
 		this.teamName = teamName;
