@@ -5,6 +5,7 @@
 - [v0. 기본 예제](./src/main/java/hello/advanced/v0)
 - [v1. 로그 추적기 - 프로토타입 개발](./src/main/java/hello/advanced/v1)
 - [v2. 로그 추적기 - 파라미터로 동기화 개발](./src/main/java/hello/advanced/v2)
+- [v3. 로그 추적기 - 필드 동기화 방식 개발](./src/main/java/hello/advanced/v3)
 
 ### 로그추적기 요구사항
 
@@ -17,3 +18,6 @@
 - HTTP 요청을 구분하여 출력
     - HTTP 요청 단위로 특정 id를 남겨 어떤 HTTP 요청에서 시작된 것인지 명확하게 구분이 가능해야 함
     - 트랜잭션 ID 출력 (HTTP 요청이 시작해서 끝날 때까지를 하나의 트랜잭션이라고 표현)
+
+## section 2 - 쓰레드 로컬
+

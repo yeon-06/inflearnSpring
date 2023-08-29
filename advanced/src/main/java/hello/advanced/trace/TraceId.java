@@ -2,8 +2,10 @@ package hello.advanced.trace;
 
 import java.util.UUID;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public class TraceId {
 
     private static final int DEFAULT_LEVEL = 0;
