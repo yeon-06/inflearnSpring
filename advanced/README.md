@@ -4,7 +4,7 @@
 
 - [v0. 기본 예제](./src/main/java/hello/advanced/v0)
 - [v1. 로그 추적기 - 프로토타입 개발](./src/main/java/hello/advanced/v1)
-- [v2. 로그 추적기 - 파라미터로 동기화 개발](./src/main/java/hello/advanced/trace)
+- [v2. 로그 추적기 - 파라미터로 동기화 개발](./src/main/java/hello/advanced/v2)
 
 ### 로그추적기 요구사항
 
