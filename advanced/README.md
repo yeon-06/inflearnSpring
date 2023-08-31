@@ -5,7 +5,6 @@
 - [v0. 기본 예제](./src/main/java/hello/advanced/v0)
 - [v1. 로그 추적기 - 프로토타입 개발](./src/main/java/hello/advanced/v1)
 - [v2. 로그 추적기 - 파라미터로 동기화 개발](./src/main/java/hello/advanced/v2)
-- [v3. 로그 추적기 - 필드 동기화 방식 개발](./src/main/java/hello/advanced/v3)
 
 ### 로그추적기 요구사항
 
@@ -21,3 +20,14 @@
 
 ## section 2 - 쓰레드 로컬
 
+- [v3. 로그 추적기 - 필드 동기화 방식 개발](./src/main/java/hello/advanced/v3)
+- [v4. 로그 추적기 - 쓰레드 로컬 이용하기](./src/main/java/hello/advanced/v4)
+
+### 쓰레드 로컬
+
+- 각 thread마다 별도의 내부 저장소를 제공해주는 기능
+- java에서 `java.lang.ThreadLocal` 지원
+
+주의할 점
+- WAS는 스레드를 재사용한다.
+- 이전 스레드에서 ThreadLocal 데이터가 제거를 안했다면, 재사용될 때 해당 데이터가 남아있을 수 있다.
