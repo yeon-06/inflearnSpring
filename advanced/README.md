@@ -35,7 +35,7 @@
 
 ## section 3 - 템플릿 메서드 패턴과 콜백 패턴
 
-- 토비의 스프링에서 공부한 내용이라 예제는 생략한다. ([참고 링크](https://github.com/yeon-06/toby-spring/pull/5))
+- 토비의 스프링에서 공부한 내용과 일치. ([참고 링크](https://github.com/yeon-06/toby-spring/pull/5))
 
 ### 템플릿 메서드 패턴
 
@@ -43,3 +43,7 @@
 - 정리: 부모 클래스에 골격인 템플릿을 정의하고, 로직은 자식 클래스에 정의하는 것. 상속과 오버라이딩을 통한 다형성으로 문제를 해결하는 것.
 - 문제점: 상속의 문제점과 동일 ([Inheritance(상속) vs Composition(조합)](https://yeonyeon.tistory.com/206))
 
+### 템플릿 콜백 패턴
+
+- [v5. 로그 추적기 - 템플릿 콜백 패턴](./src/main/java/hello/advanced/v5)
+- 상속이 아닌 interface 이용
