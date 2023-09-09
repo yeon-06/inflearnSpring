@@ -14,4 +14,15 @@ class ProxyTest {
         client.execute();
         client.execute();   // 1초나 걸리는 로직을 3번 호출 -> 3초가 걸린다.
     }
+
+    @DisplayName("캐시 적용을 위한 프록시 예제")
+    @Test
+    void cacheProxy() {
+        Subject subject = new RealSubject();
+        Subject proxy = new CacheProxy(subject);
+        ProxyPatternClient client = new ProxyPatternClient(proxy);
+        client.execute();
+        client.execute();
+        client.execute();   // 캐싱을 통해 훨씬 빨리 호출된다.
+    }
 }
