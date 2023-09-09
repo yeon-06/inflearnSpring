@@ -1,4 +1,6 @@
-package hello.advanced.proxy;
+package hello.advanced.proxy.cache_example;
+
+import hello.advanced.proxy.proxy_example.Subject;
 
 public class CacheProxy implements Subject {
 

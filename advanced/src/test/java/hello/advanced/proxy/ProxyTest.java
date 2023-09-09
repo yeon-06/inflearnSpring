@@ -1,5 +1,9 @@
 package hello.advanced.proxy;
 
+import hello.advanced.proxy.cache_example.CacheProxy;
+import hello.advanced.proxy.proxy_example.ProxyPatternClient;
+import hello.advanced.proxy.proxy_example.RealSubject;
+import hello.advanced.proxy.proxy_example.Subject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

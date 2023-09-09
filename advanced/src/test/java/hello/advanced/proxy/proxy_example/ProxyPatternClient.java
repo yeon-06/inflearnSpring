@@ -1,4 +1,4 @@
-package hello.advanced.proxy;
+package hello.advanced.proxy.proxy_example;
 
 public class ProxyPatternClient {
 
