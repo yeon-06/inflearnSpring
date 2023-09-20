@@ -1,4 +1,4 @@
-package hello.advanced.proxy;
+package hello.advanced.proxy.dynamic;
 
 import hello.advanced.trace.LogTrace;
 import hello.advanced.trace.TraceStatus;
