@@ -4,7 +4,9 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.aop.Pointcut;
 import org.springframework.aop.framework.ProxyFactory;
+import org.springframework.aop.support.DefaultPointcutAdvisor;
 
 class ProxyFactoryTest {
 
@@ -48,6 +50,17 @@ class ProxyFactoryTest {
         public void test() {
             System.out.println("test");
         }
+    }
+
+    @DisplayName("advisor 사용 예제")
+    @Test
+    void advisor() {
+        ProxyFactory proxyFactory = new ProxyFactory(new NoInterfaceClass());
+        DefaultPointcutAdvisor advisor = new DefaultPointcutAdvisor(Pointcut.TRUE, new TimeAdvice());
+        proxyFactory.addAdvisor(advisor);
+        NoInterfaceClass proxy = (NoInterfaceClass) proxyFactory.getProxy();
+
+        proxy.test();
     }
 
     static class TimeAdvice implements MethodInterceptor {
