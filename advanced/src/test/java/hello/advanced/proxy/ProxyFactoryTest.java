@@ -1,9 +1,12 @@
 package hello.advanced.proxy;
 
+import java.lang.reflect.Method;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.aop.ClassFilter;
+import org.springframework.aop.MethodMatcher;
 import org.springframework.aop.Pointcut;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
@@ -61,6 +64,51 @@ class ProxyFactoryTest {
         NoInterfaceClass proxy = (NoInterfaceClass) proxyFactory.getProxy();
 
         proxy.test();
+    }
+
+
+    @DisplayName("pointcut 직접 구현 예제")
+    @Test
+    void customPointcut() {
+        ProxyFactory proxyFactory = new ProxyFactory(new NoInterfaceClass());
+        DefaultPointcutAdvisor advisor = new DefaultPointcutAdvisor(new MyPointcut(), new TimeAdvice());
+        proxyFactory.addAdvisor(advisor);
+        NoInterfaceClass proxy = (NoInterfaceClass) proxyFactory.getProxy();
+
+        proxy.test();
+    }
+
+    // 스프링이 잘 만들어둔 포인트컷이 많으므로 실제로 구현할 일은 거의 없다.
+    static class MyPointcut implements Pointcut {
+
+        @Override
+        public ClassFilter getClassFilter() {
+            return ClassFilter.TRUE;
+        }
+
+        @Override
+        public MethodMatcher getMethodMatcher() {
+            return new MyMethodMatcher();
+        }
+    }
+
+    static class MyMethodMatcher implements MethodMatcher {
+
+        @Override
+        public boolean matches(Method method, Class<?> targetClass) {
+            System.out.printf("method = %s, targetClass = %s\n", method.getName(), targetClass.getName());
+            return method.getName().equals("test");
+        }
+
+        @Override
+        public boolean isRuntime() {
+            return false;
+        }
+
+        @Override
+        public boolean matches(Method method, Class<?> targetClass, Object... args) {
+            throw new UnsupportedOperationException();
+        }
     }
 
     static class TimeAdvice implements MethodInterceptor {
