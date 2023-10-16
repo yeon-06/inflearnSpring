@@ -1,33 +1,19 @@
 package hello.advanced.bean;
 
-import hello.advanced.trace.LogTrace;
-import hello.advanced.trace.TraceStatus;
+import static hello.advanced.bean.AdvisorCreator.create;
+
 import hello.advanced.v4.FieldLogTraceV4;
-import java.lang.reflect.Method;
-import org.aopalliance.intercept.MethodInterceptor;
-import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.framework.ProxyFactory;
-import org.springframework.aop.support.DefaultPointcutAdvisor;
-import org.springframework.aop.support.NameMatchMethodPointcut;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class LogTraceBeanPostProcessor implements BeanPostProcessor {
 
     private final Advisor advisor;
 
     public LogTraceBeanPostProcessor(FieldLogTraceV4 logTrace) {
-        this.advisor = generateAdvisor(logTrace);
-    }
-
-    private Advisor generateAdvisor(LogTrace logTrace) {
-        var pointcut = new NameMatchMethodPointcut();
-        pointcut.setMappedNames("request*", "order*", "save*");
-
-        var advice = new LogTraceAdvice(logTrace);
-        return new DefaultPointcutAdvisor(advice);
+        this.advisor = create(logTrace);
     }
 
     @Override
@@ -41,25 +27,5 @@ public class LogTraceBeanPostProcessor implements BeanPostProcessor {
         ProxyFactory proxyFactory = new ProxyFactory(bean);
         proxyFactory.addAdvisor(advisor);
         return proxyFactory.getProxy();
-    }
-
-    private record LogTraceAdvice(LogTrace logTrace) implements MethodInterceptor {
-
-        @Override
-        public Object invoke(MethodInvocation invocation) throws Throwable {
-            TraceStatus status = null;
-            try {
-                Method method = invocation.getMethod();
-                String message = method.getDeclaringClass().getSimpleName() + "."
-                    + method.getName() + "()";
-                status = logTrace.begin(message);
-                Object result = invocation.proceed();
-                logTrace.end(status);
-                return result;
-            } catch (Exception e) {
-                logTrace.exception(status, e);
-                throw e;
-            }
-        }
     }
 }
