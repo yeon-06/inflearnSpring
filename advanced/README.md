@@ -131,3 +131,14 @@
 
 - 빈 생성 후에 무언가를 처리하는 용도로 사용
 - `BeanPostProcessor`의 문제점: 설정할 것이 많아 귀찮음 -> 스프링이 지원해주는 빈 후처리기가 존재함.
+
+Spring과 AspectJ
+- Spring Boot 없이 Spring을 사용한다면 `@EnableAspectJAutoProxy` 필요
+- `AnnotationAwareAspectJAutoProxyCreator`
+  - Spring Boot가 자동 설정으로 스프링 빈에 자동으로 등록 (`AopAutoConfiguration` 참고)
+  - :프록시를 자동으로 생성해주는 빈 후처리기
+  - bean으로 등록된 Advisor 찾고 프록시가 필요한 곳에 자동으로 프록시 적용
+  - `@AspectJ`와 관련된 AOP 기능 자동적으로 처리
+- 포인트컷의 사용
+  - 생성 단계: 프록시 적용 여부 판단
+  - 사용 단계: 어드바이스 적용 여부 판단

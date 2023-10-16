@@ -6,17 +6,17 @@ import java.lang.reflect.Method;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.Advisor;
+import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
-import org.springframework.aop.support.NameMatchMethodPointcut;
 
 public class AdvisorCreator {
 
     public static Advisor create(LogTrace logTrace) {
-        var pointcut = new NameMatchMethodPointcut();
-        pointcut.setMappedNames("request*", "order*", "save*");
+        var pointcut = new AspectJExpressionPointcut();
+        pointcut.setExpression("execution(* hello.advanced.bean..*(..))");
 
         var advice = new LogTraceAdvice(logTrace);
-        return new DefaultPointcutAdvisor(advice);
+        return new DefaultPointcutAdvisor(pointcut, advice);
     }
 
     private record LogTraceAdvice(LogTrace logTrace) implements MethodInterceptor {
