@@ -133,12 +133,61 @@
 - `BeanPostProcessor`의 문제점: 설정할 것이 많아 귀찮음 -> 스프링이 지원해주는 빈 후처리기가 존재함.
 
 Spring과 AspectJ
+
 - Spring Boot 없이 Spring을 사용한다면 `@EnableAspectJAutoProxy` 필요
 - `AnnotationAwareAspectJAutoProxyCreator`
-  - Spring Boot가 자동 설정으로 스프링 빈에 자동으로 등록 (`AopAutoConfiguration` 참고)
-  - :프록시를 자동으로 생성해주는 빈 후처리기
-  - bean으로 등록된 Advisor 찾고 프록시가 필요한 곳에 자동으로 프록시 적용
-  - `@AspectJ`와 관련된 AOP 기능 자동적으로 처리
+    - Spring Boot가 자동 설정으로 스프링 빈에 자동으로 등록 (`AopAutoConfiguration` 참고)
+    - :프록시를 자동으로 생성해주는 빈 후처리기
+    - bean으로 등록된 Advisor 찾고 프록시가 필요한 곳에 자동으로 프록시 적용
+    - `@AspectJ`와 관련된 AOP 기능 자동적으로 처리
 - 포인트컷의 사용
-  - 생성 단계: 프록시 적용 여부 판단
-  - 사용 단계: 어드바이스 적용 여부 판단
+    - 생성 단계: 프록시 적용 여부 판단
+    - 사용 단계: 어드바이스 적용 여부 판단
+
+<br/>
+
+## section 8 - @Aspect
+
+예제 코드
+
+- [적용 예제](./src/main/java/hello/advanced/aspect)
+
+정리
+
+- @Aspect
+    - AspectJ가 지원하는 어노테이션
+    - Spring이 해당 기능을 이용해 AOP를 편리하게 지원해주고 있음
+    - BeanFactoryAspectJAdvisorBuilder가 @Aspect 정보 기반으로 포인트컷, 어드바이스, 어드바이저를 생성하고 보관하는 일을 담당
+- Advisor 기반으로 프록시 생성
+    - bean 등록
+    - 자동 프록시 생성기에 bean이 넌ㅁ어감
+    - Advisor 모두 조회
+    - Pointcut을 보고 프록시 생성 대상인지 점검
+    - 조건에 해당되면 프록시 생성하여 반환
+
+## section 9 - 스프링 AOP 개념
+
+> 관련 포스팅: [Spring의 트랜잭션 관리](https://yeonyeon.tistory.com/223)
+
+- 애플리케이션 기능은 '핵심 기능'과 '부가 기능'으로 구성
+- 반복적으로 사용되거나 책임을 분리하기 위해 등의 이유로 '부가 기능'을 분리하고, 어디에 적용할지 선택하는 기능을 하나의 모듈로 만든 것이 Aspect
+
+AOP를 사용하여 부가 기능 로직이 실제 로직에 추가되는 방법
+
+- 위빙; Weaving: 원본 로직에 부가 기능 로직이 추가되는 것
+1. 컴파일 시점
+    - AspectJ 컴파일러를 이용해 해당 클래스가 적용 대상인지 확인 후 부가 기능 로직 적용.
+2. 클래스 로딩 시점
+    - 자바는 .class 파일을 JVM 내부의 클래스 로더에 보관. 이 시점을 이용
+    - 해당 시점에 .class에 조작 (= 로드 타임 위빙)
+    - java -javaagent를 통해 클래스 로더 조작기 지정
+3. 런타임 시점 (프록시)
+    - 여태 강의를 들어왔던 내용이라 생략. 해당 방법이 가장 간단
+
+용어 정리
+- Join Point: 부가 기능을 적용 가능한 모든 지점
+- Pointcut: 부가 기능을 적용할 지점을 선별하는 기능
+- Target: 부가 기능을 적용할 대상. 어드바이스를 받는 객체.
+- Aspect: 부가 기능 (Advice) + 적용 대상 (Pointcut)을 모듈화 한 것
+- Advisor: Pointcut + Advice. (Spring AOP에서만 사용되는 용어)
+- Weaving: 부가 기능을 적용하는 행위
