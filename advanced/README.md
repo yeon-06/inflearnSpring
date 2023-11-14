@@ -191,3 +191,8 @@ AOP를 사용하여 부가 기능 로직이 실제 로직에 추가되는 방법
 - Aspect: 부가 기능 (Advice) + 적용 대상 (Pointcut)을 모듈화 한 것
 - Advisor: Pointcut + Advice. (Spring AOP에서만 사용되는 용어)
 - Weaving: 부가 기능을 적용하는 행위
+
+## section 13 - 스프링 AOP - 실무 주의사항
+
+- 자기자신을 호출하면 동작 X. (참고 글: [@Transactional이 동작하지 않는다?](https://yeonyeon.tistory.com/283))
+- 타입 캐스팅이 불편한 케이스가 생김 (interface를 이용해 프록시를 생성한 경우, abstract class로 타입캐스팅 불가능)
